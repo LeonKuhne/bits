@@ -8,7 +8,7 @@
   this.querySelector(".trackId").textContent = trackId
   this.setAttribute('trackId', trackId)
   for (let patternIdx=0; patternIdx<numPatterns; patternIdx++) {
-    this.appendChild(Component.create("wave", {...this.data, patternIdx}))
+    this.appendChild(Component.create("composer/wave", {...this.data, patternIdx}))
   }
 </script>
 
