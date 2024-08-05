@@ -1,0 +1,12 @@
+<script>
+  const numPatterns = Math.pow(2, this.data)
+  for (let patternIdx=0; patternIdx<numPatterns; patternIdx++) {
+    this.appendChild(Component.create("wave", patternIdx))
+  }
+</script>
+
+<style>
+  this {
+    display: flex;
+  }
+</style>

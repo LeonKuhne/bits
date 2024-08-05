@@ -1,0 +1,22 @@
+<div class="pattern">A</div>
+<div class="pattern">B</div>
+
+<script>
+  this.querySelectorAll(".pattern").forEach((pattern, _) => {
+    pattern.textContent += this.data % 2
+  })
+</script>
+
+<style>
+  this {
+    flex: 1;
+    text-align: center;
+    display: flex;
+    .pattern {
+      flex: 1;
+      margin: 1em;
+      background: white;
+      color: black;
+    }
+  }
+</style>
