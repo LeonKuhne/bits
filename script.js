@@ -3,13 +3,13 @@ class Component extends HTMLElement {
   static create(name, data) {
     const component = document.createElement(Component.tag)
     component.setAttribute('name', name)
-    component.setAttribute('data', data)
+    component.setAttribute('data', JSON.stringify(data))
     return component
   }
 
   connectedCallback() {
     const nameValue = this.getAttribute('name')
-    this.data = this.getAttribute('data')
+    this.data = JSON.parse(this.getAttribute('data'))
     if (!nameValue) {
       this.innerHTML = 'Missing name attribute'
       return

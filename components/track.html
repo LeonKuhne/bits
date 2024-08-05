@@ -1,12 +1,29 @@
+<div class="header">
+  Track <span class="trackId">#</span>
+</div>
+
 <script>
-  const numPatterns = Math.pow(2, this.data)
+  const numPatterns = Math.pow(2, this.data.trackIdx)
+  const trackId = this.data.trackIdx+1
+  this.querySelector(".trackId").textContent = trackId
+  this.setAttribute('trackId', trackId)
   for (let patternIdx=0; patternIdx<numPatterns; patternIdx++) {
-    this.appendChild(Component.create("wave", patternIdx))
+    this.appendChild(Component.create("wave", {...this.data, patternIdx}))
   }
 </script>
 
 <style>
   this {
     display: flex;
+    background: #852680;
+    .header {
+      font-size: 1.25rem;
+      margin: auto 0;
+      font-weight: bold;
+      padding: 0 1rem;
+    }
+  }
+  this:nth-child(even) {
+    background: #4f1d4a;
   }
 </style>

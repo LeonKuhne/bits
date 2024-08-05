@@ -1,10 +1,17 @@
+<div class="header">Pattern Layout</div>
+
 <script>
   for (let trackIdx=0; trackIdx<4; trackIdx++) {
-    this.appendChild(Component.create("track", trackIdx))
+    this.appendChild(Component.create("track", { trackIdx }))
   }
 </script>
 
 <style>
-  this {
+  this > .header {
+    font-size: 1.5rem;
+    font-weight: bold;
+    padding: 1rem;
+    background: #ccc;
+    color: #333;
   }
 </style>

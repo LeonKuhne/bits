@@ -1,22 +1,13 @@
-<div class="pattern">A</div>
-<div class="pattern">B</div>
-
 <script>
-  this.querySelectorAll(".pattern").forEach((pattern, _) => {
-    pattern.textContent += this.data % 2
-  })
+  this.append(
+    Component.create("pattern", { ...this.data, signal: "H" }),
+    Component.create("pattern", { ...this.data, signal: "L" })
+  )
 </script>
 
 <style>
   this {
     flex: 1;
-    text-align: center;
     display: flex;
-    .pattern {
-      flex: 1;
-      margin: 1em;
-      background: white;
-      color: black;
-    }
   }
 </style>
