@@ -1,5 +1,6 @@
 <script>  
   this.innerHTML += this.data.id
+  this.onclick = () => this.find("sequencer/layout").setPattern(this.data)
 </script>
 
 <style>

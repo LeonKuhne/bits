@@ -16,7 +16,5 @@
   import AudioPipeline from './model/audio.mjs'
   import Component from './lib/component.mjs'
 
-  const audio = new AudioPipeline()
-  Component.find("composer/layout").data = audio
-  Component.find("sequencer/layout").data = audio.selected
+  Component.find("composer/layout").data = new AudioPipeline()
 </script>

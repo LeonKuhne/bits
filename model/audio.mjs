@@ -3,6 +3,7 @@ import Track from './track.mjs'
 export default class AudioPipeline {
   constructor() {
     this.ctxCallbacks = []
+    this.selectedPattern = null
 
     // create tracks
     const waveSections = ['L', 'H']
@@ -24,5 +25,9 @@ export default class AudioPipeline {
 
   onContextReady(callback) {
     this.ctxCallbacks.push(callback)
+  }
+
+  select(pattern) {
+    this.selectedPattern = pattern
   }
 }

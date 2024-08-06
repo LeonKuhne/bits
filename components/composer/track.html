@@ -5,7 +5,6 @@
 <script>
   this.querySelector(".trackId").textContent = this.data.id
   this.setAttribute('trackId', this.data.id)
-  console.log("track data", this.data)
   for (let wave of this.data.waves) {
     this.appendChild(this.create("composer/wave", wave))
   }
@@ -20,6 +19,7 @@
       margin: auto 0;
       font-weight: bold;
       padding: 0 1rem;
+      user-select: none;
     }
   }
   this:nth-child(even) {

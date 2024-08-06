@@ -1,4 +1,11 @@
-note
+-
+
+<script>
+  this.onclick = () => {
+    this.data.toggle()
+    this.classList.toggle("active")
+  }
+</script>
 
 <style>
   this {
@@ -6,12 +13,19 @@ note
     text-align: center;
     user-select: none;
     cursor: pointer;
-
+  } this.active {
+    background: white !important;
+    color: black;
   } this:hover {
+    z-index: 5;
+  } this:hover:not(.active) {
     background: black !important;
     color: white;
+  } this:hover.active {
+    margin: -2px;
+    border: 2px solid black;
   } this:active {
-    margin: -1px 0;
-    border-color: white;
+    margin: -2px;
+    border: 2px solid black;
   }
 </style>
