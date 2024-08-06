@@ -1,22 +1,15 @@
 <div class="notes"></div>
 
 <script>
+  const Note = (await import("./model/note.mjs")).default
   const firstOctave = -2
   const lastOctave = 2
-  const noteNames = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"]
-  const semitoneStep = Math.pow(2, 1/12)
-  const noteFreqs = noteNames.map((_, i) => 440 * Math.pow(semitoneStep, i - 9))
   const notes = this.querySelector(".notes")
   const updateVisibility = () => this.style.display = this.data ? "flex" : "none"
-  const freqToNote = freq => Math.round(12 * Math.log2(freq / 440) + 9)
-  const freqToNoteName = freq => noteNames[freqToNote(freq) % 12] 
-  const freqToOctave = freq => Math.floor(freqToNote(freq) / 12) - 1
   const eachNote = (fn) => {
     for (let octave = firstOctave; octave <= lastOctave; octave++) {
-      for (let note = 0; note < 12; note++) {
-        const freq = noteFreqs[note] * Math.pow(2, octave)
-        const noteName = noteNames[note]
-        fn({ octave, freq, noteName })
+      for (let noteName of Note.names) {
+        fn(new Note(octave, noteName, note => this.data.toggle(note)))
       }
     }
   }
@@ -27,11 +20,19 @@
   eachNote((note) => {
     const row = document.createElement("div")
     row.classList.add("row")
-    row.append(this.create("sequencer/key", note))
-    for (let beat = 0; beat < 16; beat++) {
-      row.append(this.create("sequencer/note", {...note, toggle: () => {
-        this.data.toggle(beat, note)
-      }}))
+    row.append(this.create("sequencer/key", { instrument: null, note }))
+    for (let measure = 0; measure < 4; measure++) {
+      const bar = document.createElement("div")
+      bar.classList.add("bar")
+      for (let beat = 0; beat < 4; beat++) {
+        const timestep = 4 * measure + beat
+        bar.append(this.create("sequencer/note", {
+          note: note,
+          timestep: timestep,
+          toggle: () => this.data.toggle(timestep, note)
+        }))
+      }
+      row.append(bar)
     }
     notes.prepend(row)
   })
@@ -41,16 +42,22 @@
     this.data = pattern
     updateVisibility()
     if (!pattern) return
-    const sequence = pattern.sequence
-    const rows = notes.querySelectorAll(".row")
-    for (let i = 0; i < rows.length; i++) {
-      const step = sequence[i]
-      const row = rows[i]
-      const notes = row.querySelectorAll(this.query("sequencer/note"))
-      for (let j = 0; j < notes.length; j++) {
-        notes[j].classList.toggle("active", step[j])
-      }
-    }
+    // update keyboard instrument 
+    notes.querySelectorAll(this.query("sequencer/key")).forEach((elem, i) => {
+      elem.data.instrument = pattern.instrument
+    })
+    // update active notes to match sequence
+    notes.querySelectorAll(".row").forEach((row, _) => {
+      row.querySelectorAll(".bar").forEach((bar, measure) => {
+        bar.querySelectorAll(this.query("sequencer/note")).forEach((note, beat) => {
+          const timestep = measure * 4 + beat
+          const needsNote = pattern.isSet(timestep, note.data.note)
+          const hasNote = note.classList.contains("active") 
+          if (needsNote === hasNote) return
+          note.classList.toggle("active")
+        })
+      })
+    })
   }
   this.setPattern(this.data)
 </script>
@@ -63,22 +70,25 @@
     overflow-x: hidden;
     overflow-y: scroll;
 
-    .notes {
-      flex: 1;
-    }
-
-    .row {
+    .notes, .row, .bar {
       flex: 1;
       display: flex;
+    } .notes {
+      flex-direction: column;
+    } .bar {
+      flex-direction: row;
+    } .row {
       flex-direction: row;
     } .row:hover {
       opacity: 0.8;
     } .row :first-child {
       width: 5rem;
-    } .row :nth-child(2n+2) {
+    } .bar {
+      border-left: 2px solid black;
+    } .bar:nth-child(even) {
+      border-left: 3px solid black !important;
+    } .bar :nth-child(2n+2) {
       background: #0002
-    } .row :nth-child(4n+2) {
-      border-left: 5px solid black;
     }
   }
 </style>

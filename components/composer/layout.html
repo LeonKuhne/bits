@@ -1,6 +1,7 @@
 <div class="header">Pattern Select</div>
 
 <script>
+  if (!this.data) return
   for (let track of this.data.tracks) {
     this.appendChild(this.create("composer/track", track))
   }

@@ -14,7 +14,14 @@ export default class Pattern {
   }
 
   toggle(beat, note) {
-    this.sequence[beat][note] = !this.sequence[beat][note]
+    const timestep = this.sequence[beat]
+    const index = timestep.indexOf(note.key)
+    if (index > -1) timestep.splice(index, 1)
+    else timestep.push(note.key) 
+  }
+
+  isSet(beat, note) {
+    return this.sequence[beat].includes(note.key)
   }
 
   static Key(trackId, waveId, signalId) {

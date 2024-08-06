@@ -1,6 +1,6 @@
 <script>
   this.querySelector
-  this.innerHTML += `${this.data.noteName}${this.data.octave}`
+  this.innerHTML += this.data.note.key
   const instrument = this.data.instrument
   const freq = this.data.freq
   this.addEventListener("mousedown", () => instrument.play(freq))
