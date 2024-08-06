@@ -1,6 +1,7 @@
 class Component extends HTMLElement {
   static tag = 'fill-elem';
-  static create(path, data) {
+  static state = {}
+  static create(path, data={}) {
     const component = document.createElement(Component.tag)
     component.setAttribute('path', path)
     component.setAttribute('data', JSON.stringify(data))
@@ -10,7 +11,7 @@ class Component extends HTMLElement {
   connectedCallback() {
     this._parseName()
     if (!this.name) { this.innerHTML = 'Missing name attribute'; return }
-    this.data = JSON.parse(this.getAttribute('data'))
+    this.data = JSON.parse(this.getAttribute('data')) || {}
 
     fetch(`components/${this.path}.html`).then(res => res.text()).then(html => {
         this.innerHTML = html;
@@ -32,8 +33,9 @@ class Component extends HTMLElement {
       })
   }
 
-  query() { return Component._query(this.path) }
+  get global() { return Component.state }
 
+  query() { return Component._query(this.path) }
   static _query(path) {
     return `${Component.tag}[name=${path.replace('/', '-')}]`
   }

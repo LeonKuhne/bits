@@ -1,0 +1,32 @@
+<script>
+  this.querySelector
+  this.innerHTML += `${this.data.noteName}${this.data.octave}`
+  const instrument = this.global.audio.activeInstrument
+  const freq = this.data.freq
+  this.addEventListener("mousedown", () => instrument.play(freq))
+  this.addEventListener("mouseenter", () => instrument.note(freq))
+  this.addEventListener("mouseup", () => instrument.stop())
+</script>
+
+<style>
+  this {
+    background: white;
+    color: black;
+    user-select: none;
+    font-weight: bold;
+    padding-left: .25rem;
+  } this:hover {
+    background: black;
+    color: white;
+    cursor: pointer;
+  } this:not(:hover) {
+    /* fade out on hove exit */
+    animation: fade-out 0.5s;
+    animation-fill-mode: backwards;
+  }
+  @keyframes fade-out {
+    0% { background: rgb(0,0,0); color: rgb(255,255,255); } 
+    20% { background: rgb(195,195,195); color: rgb(195,195,195); } 
+    100% { background: rgb(255,255,255); color: rgb(0,0,0); } 
+  }
+</style>

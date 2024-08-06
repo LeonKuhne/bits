@@ -3,6 +3,6 @@ header a music generation thing, we\'ll see
 
 help .cd | indent
 
-function serve() {
+function start() {
 	python -m http.server
 }

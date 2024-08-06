@@ -1,0 +1,59 @@
+<div class="notes"></div>
+
+<script>
+  const firstOctave = -2
+  const lastOctave = 2
+  const noteNames = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"]
+  const semitoneStep = Math.pow(2, 1/12)
+  const noteFreqs = noteNames.map((_, i) => 440 * Math.pow(semitoneStep, i - 9))
+  const freqToNote = freq => Math.round(12 * Math.log2(freq / 440) + 9)
+  const freqToNoteName = freq => noteNames[freqToNote(freq) % 12] 
+  const freqToOctave = freq => Math.floor(freqToNote(freq) / 12) - 1
+  const eachNote = (fn) => {
+    for (let octave = firstOctave; octave <= lastOctave; octave++) {
+      for (let note = 0; note < 12; note++) {
+        const freq = noteFreqs[note] * Math.pow(2, octave)
+        const noteName = noteNames[note]
+        fn({ octave, freq, noteName })
+      }
+    }
+  }
+
+  // create note area
+  const notes = this.querySelector(".notes")
+  const timestepColumn = document.createElement("div")
+  timestepColumn.classList.add("timestep-column")
+  eachNote((note) => {
+    const row = document.createElement("div")
+    row.classList.add("row")
+    row.append(Component.create("sequencer/key", note))
+    for (let i = 0; i < 16; i++)
+      row.append(Component.create("sequencer/note", note))
+    notes.prepend(row)
+  })
+</script>
+
+<style>
+  this {
+    background: rgb(44, 87, 33);
+    display: flex;
+    flex-direction: column;
+    max-height: 23rem;
+    overflow-x: hidden;
+    overflow-y: scroll;
+
+    .row {
+      flex: 1;
+      display: flex;
+      flex-direction: row;
+    } .row:hover {
+      opacity: 0.8;
+    } .row :first-child {
+      width: 5rem;
+    } .row :nth-child(2n+2) {
+      background: #0002
+    } .row :nth-child(4n+2) {
+      border-left: 5px solid black;
+    }
+  }
+</style>

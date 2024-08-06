@@ -5,9 +5,14 @@
   <title>Mint Music</title>
   <link rel="icon" href="data:;base64,iVBORw0KGgo=">
   <link rel="stylesheet" href="style.css">
-  <script src="script.js"></script>
+  <script src="component.js"></script>
+  <script src="audio.js"></script>
 </html>
 <body>
-  <fill-elem path="composer/layout" />
+  <fill-elem path="composer/layout"></fill-elem>
+  <fill-elem path="sequencer/layout"></fill-elem>
 </body>
+<script>
+  Component.state = { audio: new AudioPipeline() }
+</script>
 </html>
