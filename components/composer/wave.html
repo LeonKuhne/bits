@@ -1,8 +1,7 @@
 <script>
-  this.append(
-    Component.create("composer/pattern", { ...this.data, signal: "H" }),
-    Component.create("composer/pattern", { ...this.data, signal: "L" })
-  )
+  for (let pattern of this.data.patterns) {
+    this.appendChild(this.create("composer/pattern", pattern))
+  }
 </script>
 
 <style>

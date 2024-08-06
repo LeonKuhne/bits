@@ -1,17 +1,13 @@
-class AudioPipeline {
-  constructor() {
-    this.ctx = new AudioContext();
-    this.activeInstrument = new BasicInstrument(this.ctx)
-  }
-}
-
-class BasicInstrument {
-  constructor(ctx, adsr={}) {
-    this.ctx = ctx
+export default class BasicInstrument {
+  constructor(audio, adsr={}) {
     this.adsr = {attack: .3, release: .5, slide: .3, ...adsr}
-    this.volume = new GainNode(this.ctx, { gain: 0 })
-    this.volume.connect(ctx.destination)
     this.isPlaying = false
+    this.ctx = null
+    audio.onContextReady((ctx) => {
+      this.ctx = ctx
+      this.volume = new GainNode(this.ctx, { gain: 0 })
+      this.volume.connect(this.ctx.destination)
+    })
   }
 
   play(freq) {

@@ -1,8 +1,8 @@
 <div class="header">Pattern Select</div>
 
 <script>
-  for (let trackIdx=0; trackIdx<4; trackIdx++) {
-    this.appendChild(Component.create("composer/track", { trackIdx }))
+  for (let track of this.data.tracks) {
+    this.appendChild(this.create("composer/track", track))
   }
 </script>
 

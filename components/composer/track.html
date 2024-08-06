@@ -3,12 +3,11 @@
 </div>
 
 <script>
-  const numPatterns = Math.pow(2, this.data.trackIdx)
-  const trackId = this.data.trackIdx+1
-  this.querySelector(".trackId").textContent = trackId
-  this.setAttribute('trackId', trackId)
-  for (let patternIdx=0; patternIdx<numPatterns; patternIdx++) {
-    this.appendChild(Component.create("composer/wave", {...this.data, patternIdx}))
+  this.querySelector(".trackId").textContent = this.data.id
+  this.setAttribute('trackId', this.data.id)
+  console.log("track data", this.data)
+  for (let wave of this.data.waves) {
+    this.appendChild(this.create("composer/wave", wave))
   }
 </script>
 

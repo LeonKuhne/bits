@@ -1,7 +1,7 @@
 <script>
   this.querySelector
   this.innerHTML += `${this.data.noteName}${this.data.octave}`
-  const instrument = this.global.audio.activeInstrument
+  const instrument = this.data.instrument
   const freq = this.data.freq
   this.addEventListener("mousedown", () => instrument.play(freq))
   this.addEventListener("mouseenter", () => instrument.note(freq))

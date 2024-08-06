@@ -1,6 +1,8 @@
 <div class="notes"></div>
 
 <script>
+  if (!this.data) return
+  const instrument = this.data.instrument
   const firstOctave = -2
   const lastOctave = 2
   const noteNames = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"]
@@ -14,7 +16,7 @@
       for (let note = 0; note < 12; note++) {
         const freq = noteFreqs[note] * Math.pow(2, octave)
         const noteName = noteNames[note]
-        fn({ octave, freq, noteName })
+        fn({ instrument, octave, freq, noteName })
       }
     }
   }
@@ -26,9 +28,10 @@
   eachNote((note) => {
     const row = document.createElement("div")
     row.classList.add("row")
-    row.append(Component.create("sequencer/key", note))
-    for (let i = 0; i < 16; i++)
-      row.append(Component.create("sequencer/note", note))
+    row.append(this.create("sequencer/key", note))
+    for (let i = 0; i < 16; i++) {
+      row.append(this.create("sequencer/note", note))
+    }
     notes.prepend(row)
   })
 </script>
