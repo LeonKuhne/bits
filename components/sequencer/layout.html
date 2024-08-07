@@ -60,6 +60,7 @@
     })
   }
   this.setPattern(this.data)
+  document.addEventListener("updatePattern", data => this.setPattern(data.detail))
 </script>
 
 <style>

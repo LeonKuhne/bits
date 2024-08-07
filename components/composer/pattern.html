@@ -1,6 +1,7 @@
 <script>  
   this.innerHTML += this.data.id
-  this.onclick = () => this.find("sequencer/layout").setPattern(this.data)
+  const updatePattern = new CustomEvent("updatePattern", { detail: this.data })
+  this.onclick = () => document.dispatchEvent(updatePattern)
 </script>
 
 <style>
