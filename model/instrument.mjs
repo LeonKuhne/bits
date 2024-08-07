@@ -1,6 +1,6 @@
 export default class BasicInstrument {
   constructor(audio, adsr={}) {
-    this.adsr = {attack: .3, release: .5, slide: .3, ...adsr}
+    this.adsr = {attack: 0.3, release: 0.5, slide: 0.3, ...adsr}
     this.isPlaying = false
     this.ctx = null
     audio.onContextReady((ctx) => {
@@ -12,8 +12,8 @@ export default class BasicInstrument {
 
   play(freq) {
     this._instance()
-    this._start()
     this.osc.frequency.setValueAtTime(freq, this.ctx.currentTime)
+    this._start()
   }
 
   note(freq) {
@@ -24,7 +24,7 @@ export default class BasicInstrument {
   stop() {
     if (!this.isPlaying) return
     console.log('stopping')
-    this.volume.gain.linearRampToValueAtTime(0, this.ctx.currentTime + this.adsr.release)
+    this.volume.gain.exponentialRampToValueAtTime(0.0001, this.ctx.currentTime + this.adsr.release)
     this.isPlaying = false
     //this.osc.stop(this.ctx.currentTime + this.adsr.release)
   }
@@ -42,9 +42,9 @@ export default class BasicInstrument {
   _start() {
     if (this.isPlaying) return
     console.log('starting')
-    this.osc.start()
-    this.volume.gain.linearRampToValueAtTime(1, this.ctx.currentTime + this.adsr.attack)
     this.isPlaying = true
+    this.volume.gain.exponentialRampToValueAtTime(1, this.ctx.currentTime + this.adsr.attack)
+    this.osc.start()
   }
 
 }

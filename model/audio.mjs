@@ -14,6 +14,7 @@ export default class AudioPipeline {
     }
 
     document.addEventListener('click', () => {
+      if (this.ctx) return
       this.ctx = new AudioContext();
       this.ctxCallbacks.forEach((callback) => callback(this.ctx))
     })

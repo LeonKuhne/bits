@@ -1,11 +1,13 @@
 <script>
   this.querySelector
   this.innerHTML += this.data.note.key
-  const instrument = this.data.instrument
-  const freq = this.data.freq
-  this.addEventListener("mousedown", () => instrument.play(freq))
-  this.addEventListener("mouseenter", () => instrument.note(freq))
-  this.addEventListener("mouseup", () => instrument.stop())
+  const freq = this.data.note.freq
+  const startPlayback = () => this.data.instrument.play(freq)
+  const setFrequency = () => this.data.instrument.note(freq)
+  const stopPlayback = () => this.data.instrument.stop()
+  this.addEventListener("mousedown", startPlayback)
+  this.addEventListener("mouseenter", setFrequency)
+  this.addEventListener("mouseup", stopPlayback)
 </script>
 
 <style>
