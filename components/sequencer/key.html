@@ -17,18 +17,17 @@
     user-select: none;
     font-weight: bold;
     padding-left: .75rem;
-  } this:hover {
-    background: black;
-    color: white;
     cursor: pointer;
+  } this:hover {
+    background: #eee;
+  } this:hover:active {
+    background: #ccc !important;
   } this:not(:hover) {
-    /* fade out on hove exit */
     animation: fade-out 0.5s;
     animation-fill-mode: backwards;
   }
   @keyframes fade-out {
-    0% { background: rgb(0,0,0); color: rgb(255,255,255); } 
-    20% { background: rgb(195,195,195); color: rgb(195,195,195); } 
+    0% { background: rgb(210, 210, 210); color: rgb(230,230,230); } 
     100% { background: rgb(255,255,255); color: rgb(0,0,0); } 
   }
 </style>
