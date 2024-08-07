@@ -16,35 +16,34 @@ export default class BasicInstrument {
     this._start()
   }
 
-  note(freq) {
+  slide(freq) {
     if (!this.isPlaying) return
     this.osc.frequency.setValueAtTime(freq, this.ctx.currentTime + this.adsr.slide)
   }
 
   stop() {
     if (!this.isPlaying) return
-    console.log('stopping')
-    this.volume.gain.exponentialRampToValueAtTime(0.0001, this.ctx.currentTime + this.adsr.release)
     this.isPlaying = false
-    //this.osc.stop(this.ctx.currentTime + this.adsr.release)
+    this.volume.gain.setTargetAtTime(0, this.ctx.currentTime, this.adsr.release)
+    setTimeout(() => {
+      if (!this.osc) return
+      this.osc.disconnect()
+      this.osc.stop()
+      this.osc = null
+    }, this.adsr.release * 1000)
   }
 
   _instance() {
-    if (this.isPlaying) return
-    if (this.osc) {
-      this.osc.disconnect()
-      this.osc.stop()
-    }
+    if (this.osc) return
+    this.volume.gain.setValueAtTime(0, this.ctx.currentTime)
     this.osc = new OscillatorNode(this.ctx, { type: "sine" })
     this.osc.connect(this.volume)
+    this.osc.start()
   }
 
   _start() {
     if (this.isPlaying) return
-    console.log('starting')
     this.isPlaying = true
     this.volume.gain.exponentialRampToValueAtTime(1, this.ctx.currentTime + this.adsr.attack)
-    this.osc.start()
   }
-
 }

@@ -3,10 +3,10 @@
   this.innerHTML += this.data.note.key
   const freq = this.data.note.freq
   const startPlayback = () => this.data.instrument.play(freq)
-  const setFrequency = () => this.data.instrument.note(freq)
+  const slideFrequency = () => this.data.instrument.slide(freq)
   const stopPlayback = () => this.data.instrument.stop()
   this.addEventListener("mousedown", startPlayback)
-  this.addEventListener("mouseenter", setFrequency)
+  this.addEventListener("mouseenter", slideFrequency)
   this.addEventListener("mouseup", stopPlayback)
 </script>
 
