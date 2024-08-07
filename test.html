@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Test</title>
+</head>
+</html>
+<body>
+  test
+  <script>
+    const ctx = new AudioContext()
+    document.addEventListener("mousedown", () => {
+      const osc = ctx.createOscillator()
+      const gain = ctx.createGain()
+      const freq = 440
+      const duration = 1
+      osc.connect(gain)
+      gain.connect(ctx.destination)
+      osc.frequency.value = freq
+      gain.gain.setValueAtTime(0, ctx.currentTime)
+      gain.gain.linearRampToValueAtTime(1, ctx.currentTime + 0.01)
+      gain.gain.linearRampToValueAtTime(0, ctx.currentTime + duration)
+      osc.start()
+      this.setTimeout(() => {
+        osc.stop()
+        osc.disconnect()
+      }, duration * 1000)
+    })
+
+  </script>
+</body>

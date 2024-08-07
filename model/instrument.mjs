@@ -1,19 +1,31 @@
 export default class BasicInstrument {
   constructor(audio, adsr={}) {
-    this.adsr = {attack: 0.3, release: 0.5, slide: 0.3, ...adsr}
+    this.adsr = {attack: 0.3, release: 0.3, slide: 0.3, ...adsr}
     this.isPlaying = false
     this.ctx = null
     audio.onContextReady((ctx) => {
       this.ctx = ctx
-      this.volume = new GainNode(this.ctx, { gain: 0 })
-      this.volume.connect(this.ctx.destination)
     })
   }
 
+  _instance(freq) {
+    if (this.osc) return
+    const now = this.ctx.currentTime
+    const timeAtFullVolume = now + this.adsr.attack 
+    this.osc = this.ctx.createOscillator()
+    this.volume = this.ctx.createGain()
+    this.osc.connect(this.volume)
+    this.volume.connect(this.ctx.destination)
+    this.osc.frequency.value = freq
+    this.volume.gain.setValueAtTime(0, now)
+    this.volume.gain.linearRampToValueAtTime(1, timeAtFullVolume)
+    this.volume.gain.setValueAtTime(1, timeAtFullVolume)
+    this.osc.start()
+  }
+
   play(freq) {
-    this._instance()
-    this.osc.frequency.setValueAtTime(freq, this.ctx.currentTime)
-    this._start()
+    this._instance(freq)
+    this.isPlaying = true
   }
 
   slide(freq) {
@@ -23,27 +35,27 @@ export default class BasicInstrument {
 
   stop() {
     if (!this.isPlaying) return
+    const time = this.ctx.currentTime
+    const delay = this.adsr.release
+    const eol = time + delay
     this.isPlaying = false
-    this.volume.gain.setTargetAtTime(0, this.ctx.currentTime, this.adsr.release)
+    // ramp back down from attack
+    if (this.volume.gain.value !== 1) {
+      this.volume.gain.linearRampToValueAtTime(0, eol)
+    // ramp down from max
+    } else {
+      const halflife = time + delay/2
+      this.volume.gain.setValueAtTime(1, time)
+      this.volume.gain.exponentialRampToValueAtTime(0.5, halflife)
+      this.volume.gain.setValueAtTime(0.5, halflife)
+      this.volume.gain.exponentialRampToValueAtTime(0.001, eol)
+    }
+    this.volume.gain.setValueAtTime(0, eol)
     setTimeout(() => {
       if (!this.osc) return
       this.osc.disconnect()
       this.osc.stop()
       this.osc = null
-    }, this.adsr.release * 1000)
-  }
-
-  _instance() {
-    if (this.osc) return
-    this.volume.gain.setValueAtTime(0, this.ctx.currentTime)
-    this.osc = new OscillatorNode(this.ctx, { type: "sine" })
-    this.osc.connect(this.volume)
-    this.osc.start()
-  }
-
-  _start() {
-    if (this.isPlaying) return
-    this.isPlaying = true
-    this.volume.gain.exponentialRampToValueAtTime(1, this.ctx.currentTime + this.adsr.attack)
+    }, delay * 1000)
   }
 }

@@ -2,8 +2,8 @@
 
 <script>
   const Note = (await import("./model/note.mjs")).default
-  const firstOctave = -2
-  const lastOctave = 2
+  const firstOctave = -1
+  const lastOctave = 1
   const notes = this.querySelector(".notes")
   const updateVisibility = () => this.style.display = this.data ? "flex" : "none"
   const eachNote = (fn) => {
