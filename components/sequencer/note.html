@@ -1,10 +1,14 @@
 -
 
 <script>
-  this.onclick = () => {
-    this.data.toggle()
+  const toggle = () => {
     this.classList.toggle("active")
+    this.data.toggle()
   }
+  this.addEventListener("mousedown", toggle)
+  this.addEventListener("mouseenter", () => {
+    if (event.buttons === 1) toggle()
+  })
 </script>
 
 <style>
@@ -13,6 +17,7 @@
     text-align: center;
     user-select: none;
     cursor: pointer;
+    border-bottom: 1px solid #0003;
   } this.active {
     background: white !important;
     color: black;
